@@ -3,6 +3,14 @@
 A static page for reviewing the interface without a backend, published to
 GitHub Pages by `.github/workflows/preview.yml`.
 
+## One time setup
+
+GitHub Pages has to be switched on by a repository admin before the first
+deploy can work: **Settings, Pages, Source: GitHub Actions**. The workflow
+token is not permitted to create the Pages site itself. Once it is on, every
+push to `main` or the build branch republishes the preview at
+`https://parthchhabraa.github.io/SB/`.
+
 It imports the **real components** from `components/` and the real stylesheet
 from `app/globals.css`, so what you see is the code that ships rather than a
 mockup that drifts from it. Three things are swapped out, because none of them

@@ -43,28 +43,30 @@ export function SubjectRow({
   return (
     <li className="border border-hairline bg-raised rounded-plate">
       <div className="flex items-stretch">
-        {/* The colour reads as a physical edge of the plate rather than a
-            decorative stripe: it is the full height of the row, flush. */}
-        <span
-          aria-hidden
-          className="w-1.5 shrink-0"
-          style={{ backgroundColor: subjectColorHex(subject.color) }}
-        />
-
-        <div className="flex-1 min-w-0 p-3 flex items-center gap-2">
+        <div className="flex-1 min-w-0 p-3 flex items-center gap-3">
           <button
             type="button"
             onClick={() => setExpanded((v) => !v)}
             aria-expanded={expanded}
-            className="flex-1 min-w-0 text-left"
+            className="flex-1 min-w-0 text-left flex items-center gap-3"
           >
-            <span className="block truncate text-body">{subject.name}</span>
-            <span className="block text-micro text-ink-dim">
-              {expanded
-                ? "Hide subtopics"
-                : subtopics.data
-                  ? `${subtopics.data.length} subtopics`
-                  : "Subtopics"}
+            {/* A solid block in the subject's colour, in the proportion it
+                will take in the day strip. It reads as a sample of the thing
+                itself rather than as decoration on the edge of the card. */}
+            <span
+              aria-hidden
+              className="h-2 w-5 shrink-0"
+              style={{ backgroundColor: subjectColorHex(subject.color) }}
+            />
+            <span className="min-w-0">
+              <span className="block truncate text-body">{subject.name}</span>
+              <span className="block text-micro text-ink-dim">
+                {expanded
+                  ? "Hide subtopics"
+                  : subtopics.data
+                    ? `${subtopics.data.length} subtopics`
+                    : "Show subtopics"}
+              </span>
             </span>
           </button>
 

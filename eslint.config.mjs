@@ -12,7 +12,13 @@ const config = [
     },
   },
   {
-    ignores: [".next/**", "node_modules/**", ".pgdata/**"],
+    ignores: [
+      ".next/**",
+      "node_modules/**",
+      ".pgdata/**",
+      "preview-dist/**",
+      "shots/**",
+    ],
   },
 ];
 

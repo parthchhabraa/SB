@@ -1,0 +1,19 @@
+/* The application's real stylesheet, unchanged. */
+@import "../app/globals.css";
+
+/* Tailwind v4 scans from the CSS file's directory, so the application's own
+   source folders are declared explicitly for the preview build. */
+@source "../app";
+@source "../components";
+@source "../lib";
+@source ".";
+
+/*
+ * next/font normally defines these. The preview loads the same two families
+ * from Google Fonts in index.html and points the variables at them, so the
+ * type is the real type.
+ */
+:root {
+  --font-plex-sans: "IBM Plex Sans";
+  --font-plex-mono: "IBM Plex Mono";
+}

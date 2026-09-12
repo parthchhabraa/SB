@@ -14,7 +14,10 @@
     "db:down": "bash scripts/dev-db.sh down",
     "db:reset": "bash scripts/dev-db.sh reset",
     "test:sql": "bash scripts/dev-db.sh test",
-    "gen:types": "bash scripts/gen-types.sh"
+    "gen:types": "bash scripts/gen-types.sh",
+    "preview:dev": "vite",
+    "preview:build": "vite build",
+    "preview:shots": "node scripts/shoot-preview.mjs"
   },
   "dependencies": {
     "@date-fns/tz": "^1.5.0",
@@ -30,14 +33,18 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
+    "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^22.20.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.3.5",
+    "playwright": "^1.63.0",
     "postcss": "^8.5.28",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
+    "vite": "^8.3.0",
     "vitest": "^5.0.0"
   }
 }

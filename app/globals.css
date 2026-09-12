@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+/*
+ * Five color tokens. That is the whole palette.
+ * Hairlines are derived from ink rather than being a sixth token.
+ * Depth comes from layered flat planes and hairlines. There are no shadows.
+ */
+@theme {
+  --color-surface: #16181a;
+  --color-raised: #1f2225;
+  --color-ink: #e8e6e1;
+  --color-ink-dim: #8d9297;
+  --color-signal: #f0a32b;
+
+  /* Derived planes. Same family, used for the dim-the-room state and wells. */
+  --color-sunk: #101214;
+  --color-raised-high: #272b2f;
+
+  --color-hairline: rgb(232 230 225 / 0.1);
+  --color-hairline-strong: rgb(232 230 225 / 0.18);
+  --color-signal-dim: rgb(240 163 43 / 0.14);
+
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", monospace;
+
+  --text-timer: clamp(4rem, 17vw, 7.5rem);
+  --text-timer--line-height: 0.92;
+  --text-timer--letter-spacing: -0.03em;
+  --text-readout: 2rem;
+  --text-readout--line-height: 1.1;
+  --text-display: 1.75rem;
+  --text-display--line-height: 1.2;
+  --text-title: 1.25rem;
+  --text-title--line-height: 1.3;
+  --text-body: 1rem;
+  --text-body--line-height: 1.5;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.45;
+  --text-micro: 0.75rem;
+  --text-micro--line-height: 1.35;
+
+  /* Sharp or near sharp. No pill radii anywhere. */
+  --radius-edge: 0px;
+  --radius-plate: 2px;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-hairline);
+  }
+
+  html {
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    -webkit-font-smoothing: antialiased;
+    /* One-handed phone use: keep content clear of the home indicator. */
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Numerals never reflow. This is the detail that separates an instrument
+     from a web page, so it is on by default everywhere. */
+  :where(body) {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Focus is always visible, and spends ink rather than the accent, so the
+     accent stays reserved for the running state. */
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
+
+  /* Stop iOS zooming the page when a field is focused. */
+  @supports (-webkit-touch-callout: none) {
+    input,
+    select,
+    textarea {
+      font-size: max(16px, 1em);
+    }
+  }
+}
+
+@layer utilities {
+  .hairline {
+    border: 1px solid var(--color-hairline);
+  }
+
+  .hairline-t {
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .hairline-b {
+    border-bottom: 1px solid var(--color-hairline);
+  }
+}
+
+/*
+ * Reduced motion gets real fallbacks, not a blanket kill switch.
+ * State changes still read: colors still cross, values still land, the running
+ * state is still unmistakable. Only the travel is removed.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Color transitions are cheap and carry meaning, so they survive. */
+  [data-motion-keep-color] {
+    transition-property: color, background-color, border-color !important;
+    transition-duration: 120ms !important;
+  }
+}

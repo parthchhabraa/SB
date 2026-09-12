@@ -517,6 +517,7 @@ export type Database = {
       start_session: { Args: Record<string, unknown>; Returns: unknown };
       suggest_handle: { Args: Record<string, unknown>; Returns: unknown };
       switch_session_subject: { Args: Record<string, unknown>; Returns: unknown };
+      today_seconds: { Args: Record<string, unknown>; Returns: unknown };
       undo_discard_session: { Args: Record<string, unknown>; Returns: unknown };
       user_day_seconds: { Args: Record<string, unknown>; Returns: unknown };
       user_day_subject_seconds: { Args: Record<string, unknown>; Returns: unknown };

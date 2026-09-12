@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthForm } from "@/components/auth-form";
 import { OnboardingForm } from "@/components/onboarding-form";
 import { SubjectsScreen } from "@/components/subjects/subjects-screen";
+import { TimerScreen } from "@/components/timer/timer-screen";
 import { SettingsScreen } from "@/components/settings-screen";
 import { AppNav } from "@/components/app-nav";
 import PrivacyPage from "@/app/privacy/page";
@@ -17,6 +18,10 @@ import * as fixtures from "./fixtures";
 
 type ScreenId =
   | "tokens"
+  | "timer-idle"
+  | "timer-running"
+  | "timer-paused"
+  | "timer-pomodoro"
   | "sign-in"
   | "sign-up"
   | "onboarding"
@@ -29,6 +34,10 @@ type ScreenId =
 
 const SCREENS: { id: ScreenId; label: string; path: string; chrome: boolean }[] = [
   { id: "tokens", label: "Tokens", path: "/tokens", chrome: false },
+  { id: "timer-idle", label: "Timer, idle", path: "/timer", chrome: true },
+  { id: "timer-running", label: "Timer, running", path: "/timer", chrome: true },
+  { id: "timer-paused", label: "Timer, paused", path: "/timer", chrome: true },
+  { id: "timer-pomodoro", label: "Timer, pomodoro", path: "/timer", chrome: true },
   { id: "sign-in", label: "Sign in", path: "/sign-in", chrome: false },
   { id: "sign-up", label: "Sign up", path: "/sign-up", chrome: false },
   { id: "onboarding", label: "Onboarding", path: "/onboarding", chrome: false },
@@ -65,6 +74,17 @@ function clientFor(screen: ScreenId) {
   if (screen === "subjects-loading") return client;
 
   client.setQueryData(qk.profile, fixtures.profile);
+  client.setQueryData(qk.todaySeconds, fixtures.todaySeconds);
+  client.setQueryData(
+    qk.activeSession,
+    screen === "timer-running"
+      ? fixtures.runningSession
+      : screen === "timer-paused"
+        ? fixtures.pausedSession
+        : screen === "timer-pomodoro"
+          ? fixtures.pomodoroSession
+          : null,
+  );
   client.setQueryData(
     qk.subjects,
     screen === "subjects-empty" ? [] : fixtures.subjects,
@@ -83,6 +103,11 @@ function Screen({ id }: { id: ScreenId }) {
   switch (id) {
     case "tokens":
       return <TokensBoard />;
+    case "timer-idle":
+    case "timer-running":
+    case "timer-paused":
+    case "timer-pomodoro":
+      return <TimerScreen />;
     case "sign-in":
       return <Centered><AuthForm mode="sign-in" action={signIn} /></Centered>;
     case "sign-up":

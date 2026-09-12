@@ -44,8 +44,10 @@ export const activeSession = z.object({
   status: z.enum(["running", "paused"]),
   started_at: ts,
   planned_seconds: z.number().nullable(),
-  paused_seconds: z.coerce.number(),
+  /** Resolved pauses only. Never includes one that is still open. */
+  closed_paused_seconds: z.coerce.number(),
   paused_at: ts.nullable(),
+  auto_closed_last: z.boolean(),
   server_now: ts,
 });
 export type ActiveSession = z.infer<typeof activeSession>;
@@ -316,4 +318,23 @@ export const api = {
 
   leaderboard: (c: Client, range: "today" | "week" | "all") =>
     rpc(c, "friend_leaderboard", { p_range: range }, z.array(leaderboardRow)),
+
+  /**
+   * Today's total plus the instant it was measured. The caller keeps it live
+   * by adding the time since `as_of`, never the running session's full
+   * elapsed time, which is already inside the total.
+   */
+  todaySeconds: async (c: Client): Promise<{ seconds: number; asOf: number }> => {
+    const rows = await rpc(
+      c,
+      "today_seconds",
+      {},
+      z.array(z.object({ seconds: z.coerce.number(), as_of: ts })),
+    );
+    const row = rows[0];
+    return {
+      seconds: row?.seconds ?? 0,
+      asOf: row ? new Date(row.as_of).getTime() : Date.now(),
+    };
+  },
 } as const;

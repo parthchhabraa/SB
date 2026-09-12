@@ -12,6 +12,7 @@ import { clsx } from "@/lib/clsx";
 // Extended as each phase lands. A tab is added when the screen behind it is
 // real, so there is never a link to a placeholder.
 const ITEMS = [
+  { href: "/timer", label: "Timer" },
   { href: "/subjects", label: "Subjects" },
   { href: "/settings", label: "Settings" },
 ] as const;
@@ -21,6 +22,12 @@ function Glyph({ name, active }: { name: string; active: boolean }) {
   const common = { fill: "none", stroke, strokeWidth: 1.25 } as const;
   return (
     <svg viewBox="0 0 20 20" className="h-5 w-5" aria-hidden>
+      {name === "Timer" ? (
+        <>
+          <rect x="3" y="3" width="14" height="14" {...common} />
+          <path d="M10 6.5V10l2.5 2" {...common} strokeLinecap="square" />
+        </>
+      ) : null}
       {name === "Subjects" ? (
         <>
           <rect x="2.5" y="4" width="15" height="3.5" {...common} />

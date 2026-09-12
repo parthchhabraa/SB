@@ -3,6 +3,7 @@ export const qk = {
   subjects: ["subjects"] as const,
   subtopics: (subjectId: string) => ["subtopics", subjectId] as const,
   activeSession: ["active-session"] as const,
+  todaySeconds: ["today-seconds"] as const,
   dayTotals: (from: string, to: string) => ["day-totals", from, to] as const,
   goals: ["goals"] as const,
   rewards: ["rewards"] as const,

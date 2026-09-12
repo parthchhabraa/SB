@@ -16,7 +16,9 @@ const url = process.argv[2] ?? "http://127.0.0.1:3200/SB/";
 const outDir = process.argv[3] ?? "./shots";
 
 const SCREENS = [
-  "Tokens", "Sign in", "Sign up", "Onboarding",
+  "Tokens",
+  "Timer, idle", "Timer, running", "Timer, paused", "Timer, pomodoro",
+  "Sign in", "Sign up", "Onboarding",
   "Subjects", "Subjects, empty", "Subjects, loading",
   "Settings", "Privacy", "Terms",
 ];
@@ -34,11 +36,21 @@ const page = await browser.newPage({
 });
 
 const errors = [];
+
+// Requests the preview is expected to fail: it has no backend, and some
+// sandboxes have no route to Google Fonts. Everything else is a real problem.
+const EXPECTED_FAILURE = /preview\.invalid|fonts\.(googleapis|gstatic)\.com/;
+
 page.on("pageerror", (e) => errors.push(`page error: ${e}`));
+page.on("requestfailed", (r) => {
+  if (EXPECTED_FAILURE.test(r.url())) return;
+  errors.push(`request failed: ${r.url()}`);
+});
 page.on("console", (m) => {
   if (m.type() !== "error") return;
-  // Google Fonts is blocked in some sandboxes; that is not a build problem.
-  if (/fonts\.(googleapis|gstatic)/.test(m.text())) return;
+  // Resource failures are covered by requestfailed above, which knows the URL
+  // and so can tell an expected failure from a real one.
+  if (/Failed to load resource/.test(m.text())) return;
   errors.push(`console: ${m.text()}`);
 });
 

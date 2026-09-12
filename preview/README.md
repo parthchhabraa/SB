@@ -33,5 +33,10 @@ npm run preview:shots        # screenshot every screen and report errors
 
 ## What it cannot show
 
-Anything that needs a backend: signing in, saving a subject, or the timer
-counting. Buttons render and show their pending state, then do nothing.
+Anything that needs a backend: signing in, saving a subject, or stopping a
+session. Buttons render and show their pending state, then do nothing.
+
+The running timer is the exception. Its fixtures are anchored to when the page
+loaded rather than to a fixed date, so the number genuinely counts and the
+per-digit animation can be judged. That works because elapsed time is
+arithmetic on timestamps and needs no server to tick.
